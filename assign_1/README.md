@@ -10,7 +10,7 @@ This assignment deals with implementation of a sequential multiplier in Verilog 
 
 ## Given
 
-- Test bench for sequential divider
+- Test bench for sequential multiplier
 - Template code that you can use to fill in
 - Some test cases
 
