@@ -1,3 +1,7 @@
+alu32.v
+regfile.v
+decoder.v
+control.v
 cpu.v
 cpu_tb.v
 dmem.v
