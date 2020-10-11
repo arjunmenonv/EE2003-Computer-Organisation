@@ -1,3 +1,13 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  Instruction Decoder Module
+*/
+
+
 module decoder(
     input [31:0] instr,  // Full 32-b instruction
     output [5:0] op,     // some operation encoding of your choice
@@ -80,5 +90,4 @@ always @(instr) begin
     end
     end
   end
-  //end
 endmodule

@@ -1,3 +1,12 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  ALU Module
+*/
+
 module alu32(
     input [5:0] op,      // some input encoding of your choice
     input [31:0] rv1,    // First operand

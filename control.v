@@ -1,3 +1,12 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  Control Module and Implementation of Load-Store, Jump Instructions
+*/
+
 module control(
   input [5:0] op,
   input [31:0] r_rv2,

@@ -1,3 +1,13 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  Register File Module
+*/
+
+
 `define INIT_MEM "init_regfile.mem"
 module regfile(
     input [4:0] rs1,     // address of first operand to read - 5 bits

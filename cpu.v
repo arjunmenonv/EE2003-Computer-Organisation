@@ -1,3 +1,12 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  CPU Module
+*/
+
 module cpu (
     input clk,
     input reset,
@@ -74,14 +83,6 @@ control u_ls(
   .dwe(w_dwe),        //out
   .PC_next(PC_next)   //out
   );
-/*DEBUG !
-integer i;
-initial begin
-  for (i = 0; i<75; i++) begin
-  $display(PC_next, "\t", w_dwe);
-  end
-  @(posedge clk);
-end*/
 
 always @(w_daddr or w_dwdata or w_dwe) begin
   daddr = w_daddr;

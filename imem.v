@@ -1,3 +1,12 @@
+/*
+  Author: Arjun Menon Vadakkeveedu
+  Roll No.: EE18B104
+  Electrical Engineering, IIT Madras
+  October 2020
+  Single Cycle CPU Implementation for RV32I ISA
+  Instruction Memory Module
+*/
+
 `timescale 1ns/1ps
 
 module imem (
