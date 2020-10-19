@@ -1,10 +1,12 @@
 /*
-  Author: Arjun Menon Vadakkeveedu
-  Roll No.: EE18B104
-  Electrical Engineering, IIT Madras
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 5
+  Single Cycle CPU Implementation- ALU, Load and Store Instructions
+  Regfile module
   October 2020
-  Single Cycle CPU Implementation for RV32I ISA
-  Register File Module
+
+  Description: Declare 32 registers of width 32-bits and initialise them by reading from a .mem file
+               Implement Synchronous Write to and asynchronous read from the regfile
 */
 
 

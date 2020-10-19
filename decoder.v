@@ -1,12 +1,17 @@
 /*
-  Author: Arjun Menon Vadakkeveedu
-  Roll No.: EE18B104
-  Electrical Engineering, IIT Madras
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 6
+  Single Cycle CPU Implementation- ALU, Load and Store Instructions, Branching Instructions for RV32I ISA
+  Decoder module
   October 2020
-  Single Cycle CPU Implementation for RV32I ISA
-  Instruction Decoder Module
-*/
 
+  Description: Split 32 bit instruction into rs1, rs2, 7 bit instr opcode, funct 3 and funct7
+               Use redundancies in RV32I instructions to generate a 6 bit op which can be used as control signals
+                to trigger particular instruction in the ALU or control modules
+               Illegal instructions set to 32'b0, which triggers default cases in ALU and control modules
+                NOTE: Sequences such as 6'b0 and 6'b3F are not allotted to the 6 bit op to avoid an unintended
+                      reset from triggering a module
+*/
 
 module decoder(
     input [31:0] instr,  // Full 32-b instruction
@@ -25,7 +30,7 @@ reg [6:0] instr_opcode;
 reg [2:0] funct3;
 reg [6:0] funct7;
 reg [31:0] imm_val;
-//  Currently decodes instructions for ALU, load and store instructions
+//  Decode instructions for ALU, Load/Store, Branch and Upper Immediate instructions in RV32I (FENCE and ECALL to be done later)
 always @(instr) begin
   rs1 = instr[19:15];
   rs2 = instr[24:20];

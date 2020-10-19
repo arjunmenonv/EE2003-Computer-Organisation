@@ -1,10 +1,11 @@
 /*
-  Author: Arjun Menon Vadakkeveedu
-  Roll No.: EE18B104
-  Electrical Engineering, IIT Madras
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 6
+  Single Cycle CPU Implementation- ALU, Load and Store, Branching Instructions for RV32I ISA
+  ALU module
   October 2020
-  Single Cycle CPU Implementation for RV32I ISA
-  ALU Module
+
+  Description: Combinational module that implements ALU operation based on input 6-bit op
 */
 
 module alu32(
