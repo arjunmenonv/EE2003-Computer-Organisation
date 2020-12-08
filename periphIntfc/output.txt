@@ -1,0 +1,8 @@
+hello world
+42
+Printed so far: 15
+And that's all folks!
+HelloWorld
+HelloWorld
+HelloWorld
+HelloWorld
