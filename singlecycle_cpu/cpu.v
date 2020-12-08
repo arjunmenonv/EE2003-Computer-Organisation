@@ -1,3 +1,20 @@
+/*
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 6
+  Single Cycle CPU Implementation- ALU, Load and Store, Branching Instructions for RV32I ISA
+  CPU module
+  October 2020
+
+  Description: Instantiate alu, decoder, regfile and control modules
+               Load DMEM write enable, address and write data to the appropriate ports from output wires of control module
+               Update PC to PC_next which is determined by the Control Module
+
+  Reference for implementation of instructions: The RISC-V Instruction Set Manual, Volume I: Unprivileged ISA
+                                                Document Version 20191214-draft
+                                                Editors: Andrew Waterman, Krste Asanović (July 27, 2020)
+  Reference for Architecture: Computer Organization and Design, RISC-V Edition
+                              Authors: David A. Patterson, John L. Hennessy
+*/
 module cpu (
     input clk,
     input reset,
@@ -28,7 +45,6 @@ wire [3:0]  w_dwe;
 reg [31:0] PC_curr;
 
 // Instantiate alu, decoder, mem_access and regfile
-
 alu32 u_alu (
   .op(alu_op),    //in
   .rv1(rv1),   //in
@@ -52,7 +68,6 @@ regfile u_reg(
   .rs2(rs2),     //in
   .rd(rd),      //in
   .we(rwe & !reset),      //in from control
-  //.we(rwe),      //in from control
   .wdata(r_wdata),  // in
   .rv1(rv1),   //out
   .rv2(r_rv2),   //out
@@ -74,15 +89,8 @@ control u_ls(
   .dwe(w_dwe),        //out
   .PC_next(PC_next)   //out
   );
-/*DEBUG !
-integer i;
-initial begin
-  for (i = 0; i<75; i++) begin
-  $display(PC_next, "\t", w_dwe);
-  end
-  @(posedge clk);
-end*/
 
+//Load DMEM write enable, address and write data to the appropriate ports from output wires of control module
 always @(w_daddr or w_dwdata or w_dwe) begin
   daddr = w_daddr;
   dwdata = w_dwdata;
@@ -96,8 +104,7 @@ always @(posedge clk) begin
         dwdata <= 0;
         dwe <= 0;
     end else begin
-        //  iaddr <= iaddr +4;
-         iaddr <= PC_next; // inc pc by 4 (sequential execution)
+         iaddr <= PC_next; // PC_next is determined by Control module
     end
 end
 endmodule

@@ -1,3 +1,15 @@
+/*
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 5
+  Single Cycle CPU Implementation- ALU, Load and Store Instructions
+  Regfile module
+  October 2020
+
+  Description: Declare 32 registers of width 32-bits and initialise them by reading from a .mem file
+               Implement Synchronous Write to and asynchronous read from the regfile
+*/
+
+
 `define INIT_MEM "init_regfile.mem"
 module regfile(
     input [4:0] rs1,     // address of first operand to read - 5 bits

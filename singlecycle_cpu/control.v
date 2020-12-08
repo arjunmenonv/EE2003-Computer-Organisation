@@ -1,17 +1,32 @@
+/*
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Assignment 6
+  Single Cycle CPU Implementation- ALU, Load and Store, Branching Instructions for RV32I ISA
+  Control module
+  October 2020
+
+  Description:  Implement Load and Store Instructions
+                Set PC_next (address of next instr in IMEM):
+                  For branch type instructions, PC_next = PC_curr + inc (inc is determined by type of instr)
+                  For ALU and Load/Store instructions, PC_next = PC_curr + 4
+                Set Control signals (select alu operation, wrrite enable for regfile and dmem)
+                Load values to be written to dmem and regfile onto dwdata and reg_wdata wires
+*/
+
 module control(
-  input [5:0] op,
-  input [31:0] r_rv2,
-  input [31:0] drdata,
-  input [31:0] rvout,
-  input [31:0] imm_val,
-  input [31:0] PC_curr,
-  output rwe,
-  output [31:0] dwdata,
-  output [31:0] reg_wdata,
-  output [31:0] daddr,
-  output [3:0] dwe,
-  output [5:0] alu_op,
-  output [31:0] PC_next
+  input [5:0] op,             // 6-bit op from decoder
+  input [31:0] r_rv2,         // value at rs2 register in regfile (used in case of store instructions)
+  input [31:0] drdata,        // Data read from DMEM
+  input [31:0] rvout,         // ALU output, used for Daddr calculation in Load and Store and Iaddr calc in Branch
+  input [31:0] imm_val,       // immediate used for PC increment (conditional branch & JAL), and for AUIPC, LUI
+  input [31:0] PC_curr,       // current PC value, from cpu
+  output rwe,                 // regfile write enable
+  output [31:0] dwdata,       // Data to be written to DMEM (Store)
+  output [31:0] reg_wdata,    // Data to be written to regfile (Load)
+  output [31:0] daddr,        // Address (to read/write) of DMEM location
+  output [3:0] dwe,           // DMEM Write enable
+  output [5:0] alu_op,        // 6-bit op sent to ALU
+  output [31:0] PC_next       // next Iaddr, iaddr is set to PC_next in CPU
   );
 reg [31:0] dwdata;
 reg [31:0] reg_wdata;
@@ -21,23 +36,27 @@ reg [3:0] dwe;
 reg [5:0] alu_op;
 reg rwe;
 
+/*    NOTE:
+            Control signals must have a definite value (0 or 1) for ALL possible input combinations
+            alu_op = op if instr is ALU type
+                   = op(addi) if instr is load/store (+ JALR)
+                   = op(sub)  (BEQ and BNE)
+                   = op(SLT)  (BLT, BGE)
+                   = op(SLTU) (BLTU, BGEU)
+                   = Dont care (JAL, AUIPC, LUI)
 
-//  NOTE: Control signals must have a definite value (0 or 1) for ALL possible input combinations
+           reg_wdata = rvout for ALU operations
+                     = drdata for load (rwe = 1 for both)
+                     and rwe  = 0 for all other instr
 
-// alu_op = op if instr is ALU type, = op(addi) if instr is load/store and is op(SLTIU) (logical)
-// for branch instructions
-
-// r_wdata = rvout for ALU operations, = drdata for load (rwe = 1 for both) and rwe  = 0 for all other instr
-
-// in case of Load/Store Operation, daddr = rvout;
-
-// NOTE: PCinc must be 4 for all cases except where branching occurs
+           in case of Load/Store Operation, daddr = rvout;
+*/
 
 always @(op or drdata or rvout or r_rv2 or imm_val or PC_curr) begin
- PC_next = PC_curr + 4;
+ PC_next = PC_curr + 4;   // default: Increment PC by 4, write disabled
  dwe = 4'b0;
  rwe = 0;
-  if(op[3] == 1'b1) begin
+  if(op[3] == 1'b1) begin   // ALU operation
     alu_op = op;
     reg_wdata = rvout;
     rwe = 1;
@@ -148,7 +167,7 @@ always @(op or drdata or rvout or r_rv2 or imm_val or PC_curr) begin
     3'b100 :  begin
                 alu_op = 6'b001000;   // op(addi)
                 reg_wdata = PC_curr + 4;                // Not using ALU here to avoid routing
-                PC_next = {rvout[31:1], 1'b0};   //ALU input rv1 thro' control (hardware still simple
+                PC_next = {rvout[31:1], 1'b0};   //ALU input rv1 thro' control (hardware still simple)
               end   // JALR
     3'b101 :   begin
                 reg_wdata = PC_curr + 4;
