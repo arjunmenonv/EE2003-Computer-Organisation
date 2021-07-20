@@ -1,4 +1,4 @@
-`timescale 1ns/1ns 
+`timescale 1ns/1ns
 
 // This test bench will run for a fixed 1000 clock cycles and then dump out the memory
 // Test cases are such that they should finish within this time
@@ -6,11 +6,11 @@
 // Safe to assume that imem contains only 0 after the last instruction
 
 // MACROS:
-// A single parameter is passed into the code, 
+// A single parameter is passed into the code,
 // which is the path to the files imem.mem, dmem0-3.mem and expout.mem
 // Test cases ensure the files are named appropriately
 module cpu_tb ();
-    
+
     reg  clk, reset;
     wire [31:0] iaddr, idata, daddr, drdata, dwdata;
     wire [3:0] dwe;
@@ -48,8 +48,8 @@ module cpu_tb ();
     initial begin
 	// Uncomment below to dump out VCD file for gtkwave
 	// NOTE: This will NOT work on the jupyter terminal
-	// $dumpfile("cpu_tb.vcd");
-	// $dumpvars(0, "cpu_tb");
+	 $dumpfile("cpu_tb.vcd");
+	 $dumpvars(0, cpu_tb);
         $display("RUNNING TEST FROM ", `TESTDIR);
         clk = 1;
         reset = 1;   // This is active high reset
@@ -61,16 +61,18 @@ module cpu_tb ();
         for (i=0; i<1000; i=i+1) begin
             @(posedge clk);
         end
-        
+
         fail = 0;
         // Dump top dmem
         for (i=0; i<32; i=i+1) begin
             s = $fscanf(exp_file, "%d\n", exp_reg);
             dtmp = {u3.mem3[i], u3.mem2[i], u3.mem1[i], u3.mem0[i]};
+            $display("Expected Reg[%d] = %x vs. Got Reg[%d] = %x", i, $signed(exp_reg), i, dtmp);
             if(exp_reg !== dtmp) begin
-                $display("FAIL: Expected Reg[%d] = %x vs. Got Reg[%d] = %x", i, $signed(exp_reg), i, dtmp);
+                //$display("Expected Reg[%d] = %x vs. Got Reg[%d] = %x", i, $signed(exp_reg), i, dtmp);
+                //$display("FAIL: Expected Reg[%d] = %x vs. Got Reg[%d] = %x", i, $signed(exp_reg), i, dtmp);
                 fail = fail + 1;
-            end 
+            end
         end
 
         if(fail != 0) begin

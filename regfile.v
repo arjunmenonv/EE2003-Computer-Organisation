@@ -36,6 +36,8 @@ module regfile(
     end
     end
     //Async read
-    assign rv1 = x[rs1];
-    assign rv2 = x[rs2];
+    assign rv1 = (rs1 == 0) ? 32'b0 :
+                 ((rs1 == rd) && we) ? wdata : x[rs1];
+    assign rv2 = (rs2 == 0) ? 32'b0 :
+                 ((rs2 == rd) && we) ? wdata : x[rs2];
 endmodule

@@ -9,7 +9,7 @@
                 Set PC_next (address of next instr in IMEM):
                   For branch type instructions, PC_next = PC_curr + inc (inc is determined by type of instr)
                   For ALU and Load/Store instructions, PC_next = PC_curr + 4
-                Set Control signals (select alu operation, wrrite enable for regfile and dmem)
+                Set Control signals (select alu operation, write enable for regfile and dmem)
                 Load values to be written to dmem and regfile onto dwdata and reg_wdata wires
 */
 
@@ -52,19 +52,29 @@ reg rwe;
            in case of Load/Store Operation, daddr = rvout;
 */
 
-always @(op or drdata or rvout or r_rv2 or imm_val or PC_curr) begin
- PC_next = PC_curr + 4;   // default: Increment PC by 4, write disabled
- dwe = 4'b0;
+always @(
+  // Modify Sensitivity List
+  op or drdata or rvout or r_rv2 or imm_val or PC_curr
+  ) begin
+ PC_next = PC_curr + 4;  // happens in CPU module itself; stall in case of branch
+ // default: Increment PC by 4, write disabled
+ dwe = 4'b0;            // EX stage
  rwe = 0;
   if(op[3] == 1'b1) begin   // ALU operation
+  /*
+  Pipelining- Notes
+  To be broken into two conditional statements:
+    if(ID/EX.op[3] == 1'b1) alu_op = op;
+    if(MEM/WB.op[3] == 1'b1) reg_wdata = MEM/WB.rvout; rwe = 1;
+  */
     alu_op = op;
-    reg_wdata = rvout;
+    reg_wdata = rvout;  // can be assigned in EX stage
     rwe = 1;
   end
   else if (op[4:3] == 2'b10) begin    // if load or store instr
-    alu_op = 6'b001000;   // op(addi)
-    daddr = rvout;
-    case(op)
+    alu_op = 6'b001000;   // op(addi); IN ID or EX STAGE (ALU is a combinational unit with alu_op as a control signal)
+    daddr = rvout;        // IN EX STAGE
+    case(op)              //
       6'b010000 :   begin
                     rwe = 1;
                       case(daddr[1:0])    // last two bits of address indicate the byte to be addressed

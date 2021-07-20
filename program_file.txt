@@ -1,8 +1,12 @@
-alu32.v
+cpu.v
+IF_ID.v
+pipe_control.v
+ID_EX.v
+EX_MEM.v
+MEM_WB.v
 regfile.v
 decoder.v
-control.v
-cpu.v
+alu32.v
 cpu_tb.v
 dmem.v
 imem.v
