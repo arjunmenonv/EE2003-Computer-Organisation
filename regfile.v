@@ -1,9 +1,9 @@
 /*
   Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
-  EE2003 Computer Organisation Assignment 5
-  Single Cycle CPU Implementation- ALU, Load and Store Instructions
+  EE2003 Computer Organisation Project Extension
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
   Regfile module
-  October 2020
+  July 2021 
 
   Description: Declare 32 registers of width 32-bits and initialise them by reading from a .mem file
                Implement Synchronous Write to and asynchronous read from the regfile

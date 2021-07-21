@@ -31,7 +31,7 @@ reg [2:0] funct3;
 reg [6:0] funct7;
 reg [31:0] imm_val;
 //  Decode instructions for ALU, Load/Store, Branch and Upper Immediate instructions in RV32I (FENCE and ECALL to be done later)
-always @(instr) begin
+always @(instr or r_rv2) begin
   rs1 = instr[19:15];
   rs2 = instr[24:20];
   rd = instr[11:7];

@@ -1,12 +1,20 @@
 /*
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Project Extension
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
+  MEM/WB Register Module
+  July 2021
 
+  Description:  - Stores state signals to be used in WB stage
+                - Combinational block (MEM stage) to set write enable signals for operations with
+                  valid write signals (Load and Store Operations)
+                - rd <= 0 in case of nop
 */
 module MEM_WB(
   input clk,
   input reset,
   input [31:0] drdata,
-  input [1:0] daddr_LSBits,
-  //input [1:0] instr_type_in,
+  input [1:0] daddr_LSBits, // last two bits of address indicate the byte to be addressed
   input [2:0] sub_op_in,
   input [31:0] reg_wdata_in,
   input [4:0] rd_in,
@@ -15,7 +23,6 @@ module MEM_WB(
   input is_load_in,
   input is_store_in,
   input is_nop_in,
-  //input wdata_set,
   output [31:0] reg_wdata_wire,
   output rwe_wire,
   output reset_out,
@@ -30,7 +37,7 @@ reg [31:0] reg_wdata_wire;
 reg rwe_wire;
 //
 reg reset_out;
-reg [31:0] reg_wdata_out;   // initialise reg_wdata_wire to reg_wdata_in, assign to rwdata for Load
+reg [31:0] reg_wdata_out;
 reg [4:0] rd_out;
 reg rwe_out;
 reg [31:0] dwdata;
@@ -49,7 +56,7 @@ always @(
   case(sub_op_in)              //
     3'b000:   begin
               rwe_wire = 1;
-              case(daddr_LSBits)    // last two bits of address indicate the byte to be addressed
+              case(daddr_LSBits)
                 2'b00:  reg_wdata_wire = {{24{drdata[7]}}, drdata[7:0]};   //Byte 0
                 2'b01:  reg_wdata_wire = {{24{drdata[15]}}, drdata[15:8]}; //Byte 1
                 2'b10:  reg_wdata_wire = {{24{drdata[23]}}, drdata[23:16]};//Byte 2
@@ -58,20 +65,20 @@ always @(
               end               //LB
     3'b001 :  begin
               rwe_wire = 1;
-              case(daddr_LSBits)    // last two bits of address indicate the byte to be addressed
+              case(daddr_LSBits)
                 2'b00:  reg_wdata_wire = {{16{drdata[15]}}, drdata[15:0]}; //HW 0
                 2'b10:  reg_wdata_wire = {{16{drdata[31]}}, drdata[31:16]};//HW 1
               endcase
               end             //LH
     3'b010 :  begin
               rwe_wire = 1;
-              case(daddr_LSBits)    // last two bits of address indicate the byte to be addressed
+              case(daddr_LSBits)
                 2'b00:  reg_wdata_wire = drdata;
               endcase
               end           //LW
     3'b011 :  begin
               rwe_wire = 1;
-              case(daddr_LSBits)    // last two bits of address indicate the byte to be addressed
+              case(daddr_LSBits)
                 2'b00:  reg_wdata_wire = {24'b0, drdata[7:0]};   //Byte 0
                 2'b01:  reg_wdata_wire = {24'b0, drdata[15:8]};  //Byte 1
                 2'b10:  reg_wdata_wire = {24'b0, drdata[23:16]}; //Byte 2
@@ -80,7 +87,7 @@ always @(
               end         //LBU
     3'b100 :  begin
               rwe_wire = 1;
-              case(daddr_LSBits)    // last two bits of address indicate the byte to be addressed
+              case(daddr_LSBits)    
                 2'b00:  reg_wdata_wire = {16'b0, drdata[15:0]}; //HW 0
                 2'b10:  reg_wdata_wire = {16'b0, drdata[31:16]};//HW 1
               endcase

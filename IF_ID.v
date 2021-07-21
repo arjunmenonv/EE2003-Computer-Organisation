@@ -1,7 +1,13 @@
 /*
- Description: - IF_ID register storing PC_curr and idata
-              - No control logic to be implemented here (all subsequent pipeline regs incorporate control)
-              - Stalling in case of branches; No Forwarding logic
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Project Extension
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
+  IF/ID Register Module
+  July 2021
+
+  Description: - IF_ID register storing PC_curr and idata
+               - No control logic to be implemented here 
+               - Stall Bit (data hazard stalls) disallows Register Writes
 
 */
 module IF_ID(
@@ -27,7 +33,7 @@ always @ (posedge clk) begin
   PC_curr_out <= 0;
   idata_out <= 0;
   end
-  else if (!stall) begin      //Stall Routine 1: Disallow writees to IF/ID
+  else if (!stall) begin      //Stall Routine 1: Disallow writes to IF/ID
   PC_curr_out <= PC_curr_in;
   idata_out <= idata_in;
   end

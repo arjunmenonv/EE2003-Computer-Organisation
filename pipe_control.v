@@ -1,7 +1,15 @@
 /*
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Project Extension
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
+  Control Unit Module
+  July 2021
+
   Description:  - Revamped Control Unit for the Pipelined implementation
                 - Functionally Similar to control.v, however, no data signals are set here
-
+                - Operates in the ID Stage
+                - Control Operations that are performed in later stages are derived from
+                  control signals set in this module
 */
 
 module pipe_control(
@@ -23,7 +31,7 @@ always @(op) begin
   if(op[3] == 1'b1) instr_type = 2'b0;   // ALU operation
   else if (op[4:3] == 2'b10) begin    // if load or store instr
     instr_type = 2'b01;
-    case({op[5], op[2:0]})              //
+    case({op[5], op[2:0]})              
       4'b0000 :   begin
                   sub_op = 3'b0;   //LB
                   is_load = 1;

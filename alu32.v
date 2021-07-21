@@ -1,9 +1,9 @@
 /*
   Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
-  EE2003 Computer Organisation Assignment 6
-  Single Cycle CPU Implementation- ALU, Load and Store, Branching Instructions for RV32I ISA
+  EE2003 Computer Organisation Project Extension 
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
   ALU module
-  October 2020
+  July 2021
 
   Description: Combinational module that implements ALU operation based on input 6-bit op
 */

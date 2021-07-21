@@ -1,12 +1,14 @@
 /*
-  Description:  - Stores the following signals: reset, PC_curr, op,
-                  rd, rv1, rv2, r_rv2, rwe, imm_val
-                - Generate Control Signals generated before ALU operations
-                  (rwe, alu_op, )
-                - Signals in this register will play a role in forwarding
-                  which can be implemented in cpu
-                - Stalling set for unconditional jump instructions
-                - Clear registers in case staller is asserted
+  Author: Arjun Menon Vadakkeveedu- EE18B104, Electrical Engg, IIT Madras
+  EE2003 Computer Organisation Project Extension
+  5 stage Pipelined CPU Implementation of the RISCV RV32I ISA
+  ID/EX Register Module
+  July 2021
+
+  Description:  - Stores state signals generated in ID stage
+                - No control signal derived combinational logic to be implemented here (all
+                 subsequent pipeline regs incorporate setting data signals using combinational logic)
+                - rd <= 0 in case of nop 
 */
 module ID_EX(
   input clk,
